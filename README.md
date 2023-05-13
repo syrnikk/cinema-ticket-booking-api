@@ -1,5 +1,57 @@
 # Cinema Ticket Booking API
 
+## Installation
+1. Checkout the project
+```bash
+$ git clone https://github.com/syrnikk/cinema-ticket-booking-api.git
+```
+2. Create a virtual environment with virtualenv module:
+```bash
+$ cd cinema-ticket-booking-api
+$ python3 -m venv venv
+```
+3. After, active the virtual environment and install the requirements of project:
+```bash
+$ source venv/bin/activate
+(venv)$ pip install -r requirements.txt
+```
+4. Create .env file (example below):
+```bash
+$ touch .env
+```
+```dotenv
+PROJECT_NAME="Cinema Ticket Booking API"
+VERSION=0.0.1
+DEBUG=false
+TESTING=false
+DATABASE_URL=sqlite:///./app.db?check_same_thread=False
+SECRET_KEY=83daa0256a2289b0fb23693bf1f6034d44396675749244721a2b20e896e11662
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=60
+```
+5. Run alembic to create database changes
+```bash
+$ alembic upgrade head
+```
+
+6. Run the application (port is optional):
+```bash
+$ uvicorn app.main:app --reload --port <port>
+```
+
+## OpenAPI Documentation
+
+The API documentation is available at the following endpoint:
+
+- **URL**: `/docs`
+- **Method**: GET
+- **Description**: This endpoint serves the OpenAPI documentation for the API. It provides detailed information about the available endpoints, request/response models, and authentication requirements.
+
+To explore and interact with the API documentation, navigate to [http://your-api-url/docs](http://your-api-url/docs) in your web browser.
+
+Please refer to the documentation for more information on how to use the API and the available endpoints.
+
+
 ## Alembic Database Migrations
 
 Alembic is a database migration tool that helps manage changes to your database schema over time. It provides a way to create, apply, and revert database migrations.
