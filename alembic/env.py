@@ -9,7 +9,7 @@ import os
 import sys
 from dotenv import load_dotenv
 
-from app.config import Base
+from app.dependencies.database import Base
 from app.models import *
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
