@@ -1,7 +1,6 @@
 from app.models.user import User
 from app.repositories.user_repository import UserRepository
-from app.schemas.user_schema import UserCreate
-from app.utils.auth_utils import get_password_hash
+from app.utils.auth_utils import get_password_hash, verify_password
 
 
 class UserService:
@@ -16,3 +15,10 @@ class UserService:
 
     def save(self, user: User) -> User:
         return self.user_repository.save(user)
+
+    def change_password(self, user: User, old_password: str, new_password: str):
+        if verify_password(old_password, user.password):
+            user.password = get_password_hash(new_password)
+            self.user_repository.save(user)
+            return True
+        return False
