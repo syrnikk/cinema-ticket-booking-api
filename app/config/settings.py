@@ -1,17 +1,28 @@
-import os
-
 from pydantic import BaseSettings
 
 
 class Settings(BaseSettings):
-    PROJECT_NAME: str = os.getenv("PROJECT_NAME")
-    VERSION: str = os.getenv("VERSION")
-    DEBUG: bool = os.getenv("DEBUG")
-    TESTING: bool = os.getenv("TESTING")
-    DATABASE_URL: str = os.getenv("DATABASE_URL")
-    SECRET_KEY: str = os.getenv("SECRET_KEY")
-    ALGORITHM: str = os.getenv("ALGORITHM")
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES")
+    # project
+    PROJECT_NAME: str
+    VERSION: str
+    DEBUG: bool
+    TESTING: bool
+    # database
+    DATABASE_URL: str
+    # authentication
+    SECRET_KEY: str
+    ALGORITHM: str
+    ACCESS_TOKEN_EXPIRE_MINUTES: int
+    # mail
+    MAIL_USERNAME: str
+    MAIL_PASSWORD: str
+    MAIL_FROM: str
+    MAIL_PORT: int
+    MAIL_SERVER: str
+    MAIL_STARTTLS: bool
+    MAIL_SSL_TLS: bool
+    USE_CREDENTIALS: bool
+    VALIDATE_CERTS: bool
 
     class Config:
         env_file = ".env"
