@@ -18,6 +18,7 @@ class UserService:
         user = User(
             first_name=user_data.first_name,
             last_name=user_data.last_name,
+            date_of_birth=user_data.date_of_birth,
             email=user_data.email,
             password=get_password_hash(user_data.password),
             phone=user_data.phone
