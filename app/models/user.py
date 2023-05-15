@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Boolean, DateTime
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, Enum
 from sqlalchemy.orm import relationship
 
 from app.dependencies.database import Base
@@ -14,6 +14,7 @@ class User(Base):
     email = Column(String, nullable=False, unique=True, index=True)
     password = Column(String, nullable=False)
     phone = Column(String)
+    role = Column(Enum('admin', 'user', name='user_roles'), nullable=False)
     disabled = Column(Boolean, default=False)
 
     reservations = relationship('Reservation', back_populates='user')

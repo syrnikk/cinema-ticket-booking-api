@@ -1,3 +1,4 @@
+from functools import wraps
 from typing import Annotated
 
 from fastapi import Depends, HTTPException, status
@@ -38,3 +39,15 @@ async def get_current_active_user(
     if current_user.disabled:
         raise HTTPException(status_code=400, detail="Inactive user")
     return current_user
+
+
+def has_role(roles: list[str]):
+    def decorator(func):
+        @wraps(func)
+        async def wrapper(*args, **kwargs):
+            current_user = kwargs['current_user']
+            if not any(role == current_user.role for role in roles):
+                raise HTTPException(status_code=403, detail="Insufficient role")
+            return await func(*args, **kwargs)
+        return wrapper
+    return decorator

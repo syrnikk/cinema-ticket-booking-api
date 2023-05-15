@@ -9,6 +9,7 @@ class UserBase(BaseModel):
     date_of_birth: datetime = None
     email: str = None
     phone: str | None = None
+    role: str = None
 
     class Config:
         orm_mode = True
