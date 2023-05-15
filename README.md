@@ -20,14 +20,27 @@ $ source venv/bin/activate
 $ touch .env
 ```
 ```dotenv
+# project
 PROJECT_NAME="Cinema Ticket Booking API"
 VERSION=0.0.1
 DEBUG=false
 TESTING=false
+# database
 DATABASE_URL=sqlite:///./app.db?check_same_thread=False
+# authentication
 SECRET_KEY=83daa0256a2289b0fb23693bf1f6034d44396675749244721a2b20e896e11662
 ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=60
+# mail
+MAIL_USERNAME=cinema.ticket.booking.system@gmail.com
+MAIL_PASSWORD=xymheszucdaukhxt
+MAIL_FROM=cinema.ticket.booking.system@gmail.com
+MAIL_PORT=465
+MAIL_SERVER=smtp.gmail.com
+MAIL_STARTTLS=false
+MAIL_SSL_TLS=true
+USE_CREDENTIALS=true
+VALIDATE_CERTS=true
 ```
 5. Run alembic to create database changes
 ```bash
