@@ -10,7 +10,8 @@ from app.dependencies.services import get_user_service, get_email_service
 from app.dependencies.auth import get_current_active_user
 from app.models.user import User
 from app.schemas.email_schema import EmailSchema
-from app.schemas.password_schema import ResetPasswordRequest, ResetPasswordResponse
+from app.schemas.password_schema import ResetPasswordRequest, ResetPasswordResponse, ChangePasswordRequest, \
+    ChangePasswordResponse
 from app.schemas.token_schema import Token
 from app.schemas.user_schema import UserCreateRequest, UserResponse
 from app.services.email_service import EmailService
@@ -106,3 +107,13 @@ async def reset_password(request: ResetPasswordRequest,
         return ResetPasswordResponse(success=True, message="Changed password succesfully")
     else:
         raise HTTPException(status_code=400, detail="User with given email not found")
+
+
+@router.post("/change-password")
+async def change_password(request: ChangePasswordRequest,
+                          current_user: Annotated[User, Depends(get_current_active_user)],
+                          user_service: Annotated[UserService, Depends(get_user_service)]):
+    if user_service.change_password(current_user, request.old_password, request.new_password):
+        return ChangePasswordResponse(success=True, message="Password changed successfully")
+    else:
+        raise HTTPException(status_code=400, detail="Invalid password")
