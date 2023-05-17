@@ -13,6 +13,7 @@ class User(Base):
     date_of_birth = Column(DateTime, nullable=False)
     email = Column(String, nullable=False, unique=True, index=True)
     password = Column(String, nullable=False)
+    reset_token = Column(String)
     phone = Column(String)
     role = Column(Enum('admin', 'user', name='user_roles'), nullable=False)
     disabled = Column(Boolean, default=False)

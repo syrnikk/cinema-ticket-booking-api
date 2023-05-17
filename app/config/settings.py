@@ -13,6 +13,7 @@ class Settings(BaseSettings):
     SECRET_KEY: str
     ALGORITHM: str
     ACCESS_TOKEN_EXPIRE_MINUTES: int
+    RESET_PASSWORD_URL: str
     # mail
     MAIL_USERNAME: str
     MAIL_PASSWORD: str

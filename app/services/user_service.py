@@ -1,5 +1,8 @@
+from fastapi import HTTPException
+
 from app.models.user import User
 from app.repositories.user_repository import UserRepository
+from app.schemas.password_schema import ResetPasswordRequest
 from app.utils.auth_utils import get_password_hash, verify_password
 
 
@@ -22,3 +25,10 @@ class UserService:
             self.user_repository.save(user)
             return True
         return False
+
+    def reset_password(self, user: User, reset_token: str, new_password: str):
+        if reset_token != user.reset_token:
+            raise HTTPException(status_code=400, detail="Invalid token")
+        user.password = get_password_hash(new_password)
+        user.reset_token = None
+        self.user_repository.save(user)

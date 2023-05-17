@@ -9,11 +9,14 @@ class UserBase(BaseModel):
     date_of_birth: datetime = None
     email: str = None
     phone: str | None = None
-    role: str = None
 
     class Config:
         orm_mode = True
 
 
-class UserCreate(UserBase):
+class UserCreateRequest(UserBase):
     password: str = None
+
+
+class UserResponse(UserBase):
+    role: str = None
