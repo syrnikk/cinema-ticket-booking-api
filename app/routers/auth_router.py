@@ -1,12 +1,10 @@
 import secrets
 from datetime import timedelta
-from typing import Annotated
 
 from fastapi import APIRouter, Depends, status, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 
 from app.config.settings import settings
-from app.dependencies.services import get_user_service, get_email_service
 from app.dependencies.auth import get_current_active_user
 from app.models.user import User
 from app.schemas.email_schema import EmailSchema
@@ -23,8 +21,8 @@ router = APIRouter(tags=["Auth"])
 
 @router.post("/token", response_model=Token)
 async def login_for_access_token(
-        form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
-        user_service: Annotated[UserService, Depends(get_user_service)]
+        form_data: OAuth2PasswordRequestForm = Depends(),
+        user_service: UserService = Depends()
 ):
     user = user_service.get_user_by_email(form_data.username)
     user = authenticate_user(user, form_data.password)
@@ -43,14 +41,14 @@ async def login_for_access_token(
 
 @router.get("/users/me", response_model=UserResponse)
 async def read_users_me(
-        current_user: Annotated[User, Depends(get_current_active_user)]
+        current_user: User = Depends(get_current_active_user)
 ):
     return current_user
 
 
 @router.post("/register", status_code=status.HTTP_201_CREATED)
 def register_user(user_data: UserCreateRequest,
-                  user_service: Annotated[UserService, Depends(get_user_service)]) -> UserResponse:
+                  user_service: UserService = Depends()) -> UserResponse:
     user = User(
         first_name=user_data.first_name,
         last_name=user_data.last_name,
@@ -66,8 +64,8 @@ def register_user(user_data: UserCreateRequest,
 
 @router.post("/forgot-password")
 async def reset_password(email_schema: EmailSchema,
-                         user_service: Annotated[UserService, Depends(get_user_service)],
-                         email_service: Annotated[EmailService, Depends(get_email_service)]):
+                         user_service: UserService = Depends(),
+                         email_service: EmailService = Depends()):
     email = email_schema.email
     user = user_service.get_user_by_email(email)
     if user:
@@ -100,7 +98,7 @@ async def reset_password(email_schema: EmailSchema,
 
 @router.post("/reset-password")
 async def reset_password(request: ResetPasswordRequest,
-                         user_service: Annotated[UserService, Depends(get_user_service)]):
+                         user_service: UserService = Depends()):
     user = user_service.get_user_by_email(request.email)
     if user:
         user_service.reset_password(user, request.reset_token, request.new_password)
@@ -111,8 +109,8 @@ async def reset_password(request: ResetPasswordRequest,
 
 @router.post("/change-password")
 async def change_password(request: ChangePasswordRequest,
-                          current_user: Annotated[User, Depends(get_current_active_user)],
-                          user_service: Annotated[UserService, Depends(get_user_service)]):
+                          current_user: User = Depends(get_current_active_user),
+                          user_service: UserService = Depends()):
     if user_service.change_password(current_user, request.old_password, request.new_password):
         return ChangePasswordResponse(success=True, message="Password changed successfully")
     else:

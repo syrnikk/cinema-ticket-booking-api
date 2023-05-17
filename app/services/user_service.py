@@ -1,13 +1,12 @@
-from fastapi import HTTPException
+from fastapi import HTTPException, Depends
 
 from app.models.user import User
 from app.repositories.user_repository import UserRepository
-from app.schemas.password_schema import ResetPasswordRequest
 from app.utils.auth_utils import get_password_hash, verify_password
 
 
 class UserService:
-    def __init__(self, user_repository: UserRepository):
+    def __init__(self, user_repository: UserRepository = Depends()):
         self.user_repository = user_repository
 
     def get_user_by_id(self, user_id: int) -> User | None:

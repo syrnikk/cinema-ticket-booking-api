@@ -1,9 +1,12 @@
+from fastapi import Depends
 from sqlalchemy.orm import Session
+
+from app.dependencies.database import get_db
 from app.models.user import User
 
 
 class UserRepository:
-    def __init__(self, db: Session):
+    def __init__(self, db: Session = Depends(get_db)):
         self.db = db
 
     def get_user_by_id(self, user_id: int) -> User | None:
