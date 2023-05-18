@@ -11,4 +11,4 @@ class Cinema(Base):
     name = Column(String(255), nullable=False)
     location = Column(String(255), nullable=False)
 
-    repertoir = relationship('Repertoir', back_populates='cinema')
+    repertoire = relationship('Repertoire', back_populates='cinema')

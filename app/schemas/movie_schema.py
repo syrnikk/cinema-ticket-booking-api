@@ -1,3 +1,5 @@
+from datetime import date
+
 from pydantic import BaseModel
 
 
@@ -8,6 +10,7 @@ class MovieBase(BaseModel):
     description: str
     trailer_link: str
     duration_minutes: int
+    release_date: date
 
 
 class MovieCreate(MovieBase):

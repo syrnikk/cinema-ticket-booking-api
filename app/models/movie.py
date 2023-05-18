@@ -1,4 +1,4 @@
-from sqlalchemy import Integer, Column, String, ForeignKey
+from sqlalchemy import Integer, Column, String, ForeignKey, Date
 from sqlalchemy.orm import relationship
 
 from app.dependencies.database import Base
@@ -9,11 +9,12 @@ class Movie(Base):
 
     id = Column(Integer, primary_key=True)
     title = Column(String(255), nullable=False)
-    category_id = Column(Integer, ForeignKey('categories.id'))
+    category_id = Column(Integer, ForeignKey('categories.id'), nullable=False)
     age_restrictions = Column(Integer)
-    description = Column(String(255))
-    trailer_link = Column(String(255))
-    duration_minutes = Column(Integer)
+    description = Column(String(255), nullable=False)
+    trailer_link = Column(String(255), nullable=False)
+    duration_minutes = Column(Integer, nullable=False)
+    release_date = Column(Date, nullable=False)
 
     category = relationship('Category', backref='movies')
-    repertoir = relationship('Repertoir', back_populates='movie')
+    repertoire = relationship('Repertoire', back_populates='movie')
