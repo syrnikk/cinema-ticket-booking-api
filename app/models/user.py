@@ -1,7 +1,14 @@
+import enum
+
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, Enum
 from sqlalchemy.orm import relationship
 
 from app.dependencies.database import Base
+
+
+class Role(enum.Enum):
+    USER = 'user'
+    ADMIN = 'admin'
 
 
 class User(Base):
@@ -15,7 +22,7 @@ class User(Base):
     password = Column(String, nullable=False)
     reset_token = Column(String)
     phone = Column(String)
-    role = Column(Enum('admin', 'user', name='user_roles'), nullable=False)
+    role = Column(Enum(Role, name='user_roles'), nullable=False)
     disabled = Column(Boolean, default=False)
 
     reservations = relationship('Reservation', back_populates='user')

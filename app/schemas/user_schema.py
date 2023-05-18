@@ -2,6 +2,8 @@ from datetime import datetime
 
 from pydantic import BaseModel
 
+from app.models.user import Role
+
 
 class UserBase(BaseModel):
     first_name: str = None
@@ -19,4 +21,4 @@ class UserCreateRequest(UserBase):
 
 
 class UserResponse(UserBase):
-    role: str = None
+    role: Role = None

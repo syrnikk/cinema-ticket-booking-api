@@ -5,7 +5,7 @@ from fastapi.security import OAuth2PasswordBearer
 from jose import jwt, JWTError
 
 from app.config.settings import settings
-from app.models.user import User
+from app.models.user import User, Role
 from app.services.user_service import UserService
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
@@ -39,7 +39,7 @@ async def get_current_active_user(
     return current_user
 
 
-def has_role(roles: list[str]):
+def has_role(roles: list[Role]):
     def decorator(func):
         @wraps(func)
         async def wrapper(*args, **kwargs):

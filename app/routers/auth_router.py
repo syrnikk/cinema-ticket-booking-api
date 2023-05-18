@@ -6,7 +6,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 
 from app.config.settings import settings
 from app.dependencies.auth import get_current_active_user
-from app.models.user import User
+from app.models.user import User, Role
 from app.schemas.email_schema import EmailSchema
 from app.schemas.password_schema import ResetPasswordRequest, ResetPasswordResponse, ChangePasswordRequest, \
     ChangePasswordResponse
@@ -49,6 +49,9 @@ async def read_users_me(
 @router.post("/register", status_code=status.HTTP_201_CREATED)
 def register_user(user_data: UserCreateRequest,
                   user_service: UserService = Depends()) -> UserResponse:
+    user = user_service.get_user_by_email(user_data.email)
+    if user:
+        raise HTTPException(status_code=400, detail="User with given email already exists")
     user = User(
         first_name=user_data.first_name,
         last_name=user_data.last_name,
@@ -56,7 +59,7 @@ def register_user(user_data: UserCreateRequest,
         email=user_data.email,
         password=get_password_hash(user_data.password),
         phone=user_data.phone,
-        role="user"
+        role=Role.USER
     )
     created_user = user_service.save(user)
     return created_user
