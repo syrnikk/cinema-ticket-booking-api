@@ -1,12 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
-from app.routers import auth_router
+from fastapi_pagination import add_pagination
+from app.routers import auth_router, movie_router, category_router, cinema_router
 
 app = FastAPI()
-
-app.include_router(auth_router.router)
-
 
 # Configure CORS
 app.add_middleware(
@@ -16,3 +13,12 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Include routers
+app.include_router(auth_router.router)
+app.include_router(movie_router.router)
+app.include_router(category_router.router)
+app.include_router(cinema_router.router)
+
+# Add pagination
+add_pagination(app)
