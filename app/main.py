@@ -1,7 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi_pagination import add_pagination
-from app.routers import auth_router, movie_router, category_router, cinema_router, repertoire_router, screening_router
+from app.routers import auth_router, movie_router, category_router, cinema_router, repertoire_router, screening_router, \
+    user_router
 
 app = FastAPI()
 
@@ -21,6 +22,7 @@ app.include_router(category_router.router)
 app.include_router(cinema_router.router)
 app.include_router(repertoire_router.router)
 app.include_router(screening_router.router)
+app.include_router(user_router.router)
 
 # Add pagination
 add_pagination(app)

@@ -2,6 +2,7 @@ from fastapi import HTTPException, Depends
 
 from app.models.user import User
 from app.repositories.user_repository import UserRepository
+from app.schemas.user_schema import UserUpdate
 from app.utils.auth_utils import get_password_hash, verify_password
 
 
@@ -17,6 +18,18 @@ class UserService:
 
     def save(self, user: User) -> User:
         return self.user_repository.save(user)
+
+    def update_user(self, user_id: int, user_update: UserUpdate) -> User:
+        user = self.get_user_by_id(user_id)
+        if not user:
+            raise ValueError("User not found")
+        for field, value in user_update.dict(exclude_unset=True).items():
+            setattr(user, field, value)
+        self.user_repository.update_user(user)
+        return user
+
+    def delete_user(self, user: User):
+        self.user_repository.delete_user(user)
 
     def change_password(self, user: User, old_password: str, new_password: str):
         if verify_password(old_password, user.password):

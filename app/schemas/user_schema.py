@@ -20,5 +20,14 @@ class UserCreateRequest(UserBase):
     password: str = None
 
 
-class UserResponse(UserBase):
-    role: Role = None
+class UserUpdate(UserBase):
+    pass
+
+
+class User(UserBase):
+    id: int
+    role: Role | None = None
+    disabled: bool = None
+
+    class Config:
+        orm_mode = True

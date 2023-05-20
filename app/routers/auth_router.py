@@ -7,11 +7,11 @@ from fastapi.security import OAuth2PasswordRequestForm
 from app.config.settings import settings
 from app.dependencies.auth import get_current_active_user
 from app.models.user import User, Role
+from app.schemas import user_schema
 from app.schemas.email_schema import EmailSchema
-from app.schemas.password_schema import ResetPasswordRequest, ResetPasswordResponse, ChangePasswordRequest, \
-    ChangePasswordResponse
+from app.schemas.password_schema import ResetPasswordRequest, ResetPasswordResponse
 from app.schemas.token_schema import Token
-from app.schemas.user_schema import UserCreateRequest, UserResponse
+from app.schemas.user_schema import UserCreateRequest
 from app.services.email_service import EmailService
 from app.services.user_service import UserService
 from app.utils.auth_utils import create_access_token, authenticate_user, get_password_hash
@@ -39,7 +39,7 @@ async def login_for_access_token(
     return {"access_token": access_token, "token_type": "bearer"}
 
 
-@router.get("/users/me", response_model=UserResponse)
+@router.get("/users/me", response_model=user_schema.User)
 async def read_users_me(
         current_user: User = Depends(get_current_active_user)
 ):
@@ -48,7 +48,7 @@ async def read_users_me(
 
 @router.post("/register", status_code=status.HTTP_201_CREATED)
 def register_user(user_data: UserCreateRequest,
-                  user_service: UserService = Depends()) -> UserResponse:
+                  user_service: UserService = Depends()) -> user_schema.User:
     user = user_service.get_user_by_email(user_data.email)
     if user:
         raise HTTPException(status_code=400, detail="User with given email already exists")
@@ -66,9 +66,9 @@ def register_user(user_data: UserCreateRequest,
 
 
 @router.post("/forgot-password")
-async def reset_password(email_schema: EmailSchema,
-                         user_service: UserService = Depends(),
-                         email_service: EmailService = Depends()):
+async def forgot_password(email_schema: EmailSchema,
+                          user_service: UserService = Depends(),
+                          email_service: EmailService = Depends()):
     email = email_schema.email
     user = user_service.get_user_by_email(email)
     if user:
@@ -105,16 +105,6 @@ async def reset_password(request: ResetPasswordRequest,
     user = user_service.get_user_by_email(request.email)
     if user:
         user_service.reset_password(user, request.reset_token, request.new_password)
-        return ResetPasswordResponse(success=True, message="Changed password succesfully")
+        return ResetPasswordResponse(success=True, message="Changed password successfully")
     else:
         raise HTTPException(status_code=400, detail="User with given email not found")
-
-
-@router.post("/change-password")
-async def change_password(request: ChangePasswordRequest,
-                          current_user: User = Depends(get_current_active_user),
-                          user_service: UserService = Depends()):
-    if user_service.change_password(current_user, request.old_password, request.new_password):
-        return ChangePasswordResponse(success=True, message="Password changed successfully")
-    else:
-        raise HTTPException(status_code=400, detail="Invalid password")
