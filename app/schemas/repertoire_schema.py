@@ -1,12 +1,11 @@
 
 from pydantic import BaseModel
 
-from app.schemas.movie_schema import MovieBase
+from app.schemas.movie_schema import MovieBase, Movie
 
 
 class RepertoireBase(BaseModel):
     cinema_id: int
-    movie_id: int
 
 
 class RepertoireCreate(RepertoireBase):
@@ -15,6 +14,7 @@ class RepertoireCreate(RepertoireBase):
 
 class Repertoire(RepertoireBase):
     id: int
+    movie: Movie | None
 
     class Config:
         orm_mode = True

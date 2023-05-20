@@ -6,15 +6,15 @@ from sqlalchemy.orm import relationship
 from app.dependencies.database import Base
 
 
-class ImageFormat(enum.Enum):
+class ImageFormat(str, enum.Enum):
     MOVIE_2D = '2D'
     MOVIE_3D = '3D'
 
 
-class TranslationType(enum.Enum):
-    DUBBING = 'Dubbing'
-    SUBTITLES = 'Subtitles'
-    VOICE_OVER = 'Voice-over'
+class TranslationType(str, enum.Enum):
+    DUBBING = 'DUBBING'
+    SUBTITLES = 'SUBTITLES'
+    VOICE_OVER = 'VOICE_OVER'
 
 
 class Screening(Base):
