@@ -5,7 +5,9 @@ from fastapi_pagination import Page
 from app.dependencies.auth import has_role, get_current_active_user
 from app.models.user import Role, User
 from app.schemas.screening_schema import ScreeningCreate, ScreeningUpdate, Screening
+from app.schemas.seat_schema import Seat
 from app.services.screening_service import ScreeningService
+from app.services.seat_service import SeatService
 
 router = APIRouter(tags=["Screening"])
 
@@ -62,3 +64,9 @@ def delete_screening(screening_id: int, screening_service: ScreeningService = De
     if not screening:
         raise HTTPException(status_code=404, detail="Screening not found")
     return screening.id
+
+
+@router.get("/screenings/{screening_id}/booked-seats", response_model=list[Seat])
+def get_booked_seats(screening_id: int, seat_service: SeatService = Depends()):
+    booked_seats = seat_service.get_booked_seats_by_screening_id(screening_id)
+    return booked_seats
