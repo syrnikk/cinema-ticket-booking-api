@@ -1,4 +1,4 @@
-from typing import Type
+from typing import Type, Optional
 
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi_pagination import Page, paginate
@@ -14,7 +14,7 @@ router = APIRouter(tags=["Repertoire"])
 
 
 @router.get("/repertoire/{cinema_id}/movies", response_model=Page[RepertoireMovie], response_model_exclude_unset=True)
-def get_movies_by_cinema_id(cinema_id: int, cinema_service: CinemaService = Depends()):
+def get_movies_by_cinema_id(cinema_id: int, latest: Optional[bool] = False, cinema_service: CinemaService = Depends()):
     cinema = cinema_service.get_cinema(cinema_id)
     if not cinema:
         return []
@@ -31,6 +31,10 @@ def get_movies_by_cinema_id(cinema_id: int, cinema_service: CinemaService = Depe
         duration_minutes=repertoire.movie.duration_minutes,
         release_date=repertoire.movie.release_date
     ) for repertoire in cinema.repertoire]
+
+    if latest:
+        sorted_movies = sorted(repertoire_movie_list, key=lambda movie: movie.release_date, reverse=True)
+        repertoire_movie_list = sorted_movies[:5]
 
     return paginate(repertoire_movie_list)
 
