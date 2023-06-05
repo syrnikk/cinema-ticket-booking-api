@@ -12,6 +12,7 @@ class Movie(Base):
     category_id = Column(Integer, ForeignKey('categories.id'), nullable=False)
     age_restrictions = Column(Integer)
     description = Column(String(255), nullable=False)
+    image = Column(String, nullable=False)
     trailer_link = Column(String(255), nullable=False)
     duration_minutes = Column(Integer, nullable=False)
     release_date = Column(Date, nullable=False)

@@ -8,6 +8,7 @@ class MovieBase(BaseModel):
     category_id: int
     age_restrictions: int
     description: str
+    image: str
     trailer_link: str
     duration_minutes: int
     release_date: date
