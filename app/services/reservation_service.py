@@ -1,4 +1,7 @@
+from typing import Type
+
 from fastapi import Depends
+from fastapi_pagination import Page
 
 from app.models import Reservation, User
 from app.repositories.reservation_repository import ReservationRepository
@@ -26,3 +29,9 @@ class ReservationService:
                     f"Seat {seat.seat_number} in row {seat.row_number} is already booked for the specified screening.")
             db_seats.append(db_seat)
         return self.reservation_repository.create_reservation(screening, db_seats, current_user)
+
+    def get_reservations(self, user_id: int) -> Page[Reservation]:
+        return self.reservation_repository.get_reservations(user_id)
+
+    def get_reservation_by_id(self, reservation_id: int) -> Type[Reservation] | None:
+        return self.reservation_repository.get_reservation_by_id(reservation_id)
