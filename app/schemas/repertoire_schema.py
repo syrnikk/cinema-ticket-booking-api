@@ -9,7 +9,7 @@ class RepertoireBase(BaseModel):
 
 
 class RepertoireCreate(RepertoireBase):
-    pass
+    movie_id: int
 
 
 class Repertoire(RepertoireBase):
