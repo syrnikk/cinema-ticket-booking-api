@@ -29,7 +29,8 @@ def get_movies_by_cinema_id(cinema_id: int, latest: Optional[bool] = False, cine
         description=repertoire.movie.description,
         trailer_link=repertoire.movie.trailer_link,
         duration_minutes=repertoire.movie.duration_minutes,
-        release_date=repertoire.movie.release_date
+        release_date=repertoire.movie.release_date,
+        image=repertoire.movie.image
     ) for repertoire in cinema.repertoire]
 
     if latest:

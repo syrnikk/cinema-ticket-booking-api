@@ -8,8 +8,8 @@ class Repertoire(Base):
     __tablename__ = 'repertoire'
 
     id = Column(Integer, primary_key=True)
-    cinema_id = Column(Integer, ForeignKey('cinemas.id'))
-    movie_id = Column(Integer, ForeignKey('movies.id'))
+    cinema_id = Column(Integer, ForeignKey('cinemas.id'), nullable=False)
+    movie_id = Column(Integer, ForeignKey('movies.id'), nullable=False)
 
     cinema = relationship('Cinema', back_populates='repertoire')
     movie = relationship('Movie', back_populates='repertoire')
