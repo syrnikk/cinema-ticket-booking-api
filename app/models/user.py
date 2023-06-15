@@ -22,6 +22,7 @@ class User(Base):
     password = Column(String, nullable=False)
     reset_token = Column(String)
     phone = Column(String)
+    image_url = Column(String)
     role = Column(Enum(Role, name='user_roles'), nullable=False)
     disabled = Column(Boolean, default=False)
 

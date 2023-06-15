@@ -59,7 +59,8 @@ def register_user(user_data: UserCreateRequest,
         email=user_data.email,
         password=get_password_hash(user_data.password),
         phone=user_data.phone,
-        role=Role.USER
+        role=Role.USER,
+        image_url=user_data.image_url
     )
     created_user = user_service.save(user)
     return created_user
