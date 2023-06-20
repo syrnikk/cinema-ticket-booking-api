@@ -1,4 +1,4 @@
-from sqlalchemy import Integer, Column, String, ForeignKey, Date
+from sqlalchemy import Integer, Column, String, ForeignKey, Date, Text
 from sqlalchemy.orm import relationship
 
 from app.dependencies.database import Base
@@ -12,7 +12,7 @@ class Movie(Base):
     category_id = Column(Integer, ForeignKey('categories.id'), nullable=False)
     age_restrictions = Column(Integer)
     description = Column(String(255), nullable=False)
-    image = Column(String, nullable=False)
+    image = Column(Text, nullable=False)
     trailer_link = Column(String(255), nullable=False)
     duration_minutes = Column(Integer, nullable=False)
     release_date = Column(Date, nullable=False)

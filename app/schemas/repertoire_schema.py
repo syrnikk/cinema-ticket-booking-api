@@ -20,5 +20,6 @@ class Repertoire(RepertoireBase):
         orm_mode = True
 
 
-class RepertoireMovie(Repertoire, MovieBase):
-    pass
+class RepertoireMovie(RepertoireBase, MovieBase):
+    id: int
+    movie_id: int
