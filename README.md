@@ -47,8 +47,12 @@ VALIDATE_CERTS=true
 ```bash
 $ alembic upgrade head
 ```
+6. Run unit tests
+```bash
+$ pytest
+```
 
-6. Run the application (port is optional):
+7. Run the application (port is optional):
 ```bash
 $ uvicorn app.main:app --reload --port <port>
 ```
