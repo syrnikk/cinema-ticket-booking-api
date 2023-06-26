@@ -9,29 +9,47 @@ from app.schemas.user_schema import UserUpdate
 from tests.mocks.user_router_mock import MockUser, MockUserService
 
 
-@pytest.mark.asyncio
-async def test_change_password():
+def test_change_password():
     user_service = MockUserService()
 
     request = ChangePasswordRequest(old_password="old_password", new_password="new_password")
     current_user = MockUser()
 
-    result = await change_password(request, current_user=current_user, user_service=user_service)
+    result = change_password(request, current_user=current_user, user_service=user_service)
 
     assert result is not None
     assert isinstance(result, ChangePasswordResponse)
     assert result.success is True
     assert result.message == "Password changed successfully"
 
-@pytest.mark.asyncio
-async def test_delete_logged_in_user_account():
+def test_delete_logged_in_user_account():
     user_service = MockUserService()
 
     user_id = 1
     current_user = MockUser()
 
-    result = await delete_logged_in_user_account(user_id, user_service=user_service, current_user=current_user)
+    result = delete_logged_in_user_account(user_id, user_service=user_service, current_user=current_user)
 
     assert result is not None
     assert isinstance(result, MessageResponse)
     assert result.message == "User deleted successfully"
+
+def test_update_user():
+    user_service = MockUserService()
+
+    user_id = 1
+    user_update = UserUpdate(
+        first_name="Updated",
+        last_name="User",
+        email="updated@example.com"
+    )
+
+    current_user = MockUser()
+
+    result = update_user(user_id, user_update, user_service=user_service, current_user=current_user)
+
+    assert result is not None
+    assert isinstance(result, User)
+    assert result.first_name == "Updated"
+    assert result.last_name == "User"
+    assert result.email == "updated@example.com"
