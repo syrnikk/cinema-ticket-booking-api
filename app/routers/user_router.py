@@ -13,7 +13,7 @@ router = APIRouter(tags=["User"])
 
 
 @router.post("/change-password")
-async def change_password(request: ChangePasswordRequest,
+def change_password(request: ChangePasswordRequest,
                           current_user: User = Depends(get_current_active_user),
                           user_service: UserService = Depends()):
     if user_service.change_password(current_user, request.old_password, request.new_password):
