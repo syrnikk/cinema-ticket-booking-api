@@ -47,6 +47,7 @@ VALIDATE_CERTS=true
 ```bash
 $ alembic upgrade head
 ```
+
 6. Run unit tests
 ```bash
 $ pytest
@@ -55,6 +56,11 @@ $ pytest
 7. Run the application (port is optional):
 ```bash
 $ uvicorn app.main:app --reload --port <port>
+```
+
+8. Run Selenium tests (in a scenario where the application is running at [https://89b4778d.cinema-app.pages.dev/home](https://89b4778d.cinema-app.pages.dev/home)):
+```bash
+$ python tests/selenium/selenium_tests.py
 ```
 
 ## OpenAPI Documentation
